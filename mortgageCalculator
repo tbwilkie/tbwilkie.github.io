@@ -1,0 +1,41 @@
+# Writing the code to calculate the monthly mortgage payment
+
+def calculate_monthly_payment(principal, annual_interest_rate, term_years):
+    """Calculate monthly mortgage payment using the formula.
+
+    Parameters:
+    - principal: The loan amount.
+    - annual_interest_rate: The annual interest rate as a percentage.
+    - term_years: The term of the loan in years.
+
+    Returns:
+    - The monthly payment amount.
+    """
+    monthly_interest_rate = annual_interest_rate / 1200
+    total_payments = term_years * 12
+
+    return principal * (monthly_interest_rate / (1 - (1 + monthly_interest_rate) ** -total_payments))
+
+def generate_amortization_table(principal, annual_interest_rate, term, monthly_payment):
+    """Print the amortization table for a mortgage loan."""
+    # Convert annual interest rate percentage to a decimal and calculate monthly interest rate
+    monthly_interest_rate = annual_interest_rate / 100 / 12
+    #Initialize the starting balance as the principal
+    balance = principal
+    # Print the header for the amortization table
+    print("Payment\tInterest\tPrincipal\tRemaining Balance")
+    #Loop through each payment
+    for payment in range(1, term * 12 + 1):
+        # Calculate interest for the current month
+        interest = balance * monthly_interest_rate
+        # Calculate principal paid
+        principal_paid = monthly_payment - interest
+        # Update the remaining balance
+        balance -= principal_paid
+        # Print the current row of the amortization table
+        print(f"{payment}\t${interest:.2f}\t${principal_paid:.2f}\t\t${balance:.2f}")
+
+# Calculate the monthly payment for the specified mortgage parameters and generate the amortization table
+monthly_payment_specified = calculate_monthly_payment(500000, 3.75, 30)
+print(f"The monthly payment for $500,000 loan at 3.75% over 30 years is: ${monthly_payment_specified:,.2f}\n")
+generate_amortization_table(500000, 3.75, 30, monthly_payment_specified)
